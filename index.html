@@ -1,41 +1,30 @@
 <!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html>
+<head><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Absensi Kelas 7</title>
-<style>
-*{box-sizing:border-box;font-family:system-ui}
-body{background:#0f0f0f;color:#fff;margin:0;padding:16px;display:flex;justify-content:center}
-.card{background:#1c1c1c;width:100%;max-width:520px;border-radius:20px;padding:22px;border:1px solid #333}
-h1{text-align:center;margin:0;font-size:22px}
-.sub{text-align:center;color:#aaa;font-size:12px;margin:6px 0 16px}
-input,select{width:100%;padding:14px;border-radius:12px;border:1px solid #333;background:#111;color:#fff;margin-bottom:12px;font-size:16px}
-.btn{width:100%;padding:14px;border-radius:12px;border:none;font-weight:800;font-size:15px;cursor:pointer;margin-bottom:10px}
-.btn-kirim{background:#fff;color:#000}
-.btn-down{background:#25D366;color:#000}
-.btn-del{background:transparent;color:#ff5a5a;border:1px solid #333;margin-top:10px}
-.ok{display:none;background:#00c851;padding:10px;border-radius:10px;text-align:center;font-weight:700;margin-bottom:10px}
-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}
-th,td{border:1px solid #333;padding:6px}
-th{background:#222}
-.jml{text-align:center;color:#888;font-size:13px;margin-top:8px}
-</style>
+<style>body{background:#111;color:#fff;font-family:sans-serif;display:flex;justify-content:center;padding:20px}.card{background:#222;padding:20px;border-radius:15px;width:100%;max-width:400px} input,select,button{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:none} button{background:#fff;color:#111;font-weight:bold}</style>
 </head>
 <body>
 <div class="card">
-<h1>ABSENSI KELAS 7</h1>
-<div class="sub">7A 7B 7C 7D - Rekap 1 File</div>
-<div id="ok" class="ok">✅ Absen berhasil!</div>
+<h2 style="text-align:center">ABSENSI KELAS 7</h2>
+<p style="text-align:center;font-size:12px;opacity:.6">7A 7B 7C 7D</p>
 <input id="nama" placeholder="Nama lengkap">
 <select id="kelas"><option value="">Pilih Kelas</option><option>7A</option><option>7B</option><option>7C</option><option>7D</option></select>
-<select id="ket"><option>Hadir</option><option>Sakit</option><option>Izin</option><option>Alfa</option></select>
-<button class="btn btn-kirim" onclick="kirim()">KIRIM ABSEN</button>
-<button class="btn btn-down" onclick="down()">📥 DOWNLOAD REKAP SEMUA (Excel)</button>
-<div id="jml" class="jml">0 siswa</div>
-<div style="overflow:auto;max-height:320px"><table id="tbl"><thead><tr><th>Waktu</th><th>Nama</th><th>Kelas</th><th>Ket</th></tr></thead><tbody></tbody></table></div>
-<button class="btn btn-del" onclick="hapus()">Hapus Semua</button>
+<select id="ket"><option>Hadir</option><option>Sakit</option><option>Izin</option><option>Alpa</option></select>
+<button onclick="kirim()">KIRIM ABSEN</button>
+<p id="status" style="text-align:center;margin-top:10px"></p>
 </div>
 <script>
-let data=JSON.parse(localStorage.getItem('absen7')||'[]');
-function render(){document.querySelector('#tbl tbody').innerHTML=data.map(d=>`<tr><td>${d.w}</
+function kirim(){
+let n=document.getElementById('nama').value, k=document.getElementById('kelas').value, t=document.getElementById('ket').value;
+if(!n||!k){alert('Isi nama & kelas dulu');return}
+let data={waktu:new Date().toLocaleString('id-ID'),nama:n,kelas:k,ket:t};
+let all=JSON.parse(localStorage.getItem('absen_guru')||'[]'); all.push(data); localStorage.setItem('absen_guru',JSON.stringify(all));
+document.getElementById('status').innerText='✅ Absen berhasil terkirim, '+n;
+document.getElementById('nama').value='';
+// Kirim ke email lu biar masuk ke lu (tapi versi ini ga spam banyak)
+fetch('https://formsubmit.co/ajax/doyzzkaciw@gmail.com',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nama:n,kelas:k,ket:t,waktu:data.waktu})});
+}
+</script>
+</body>
+</html>
