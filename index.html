@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Absensi 7D - Sticker</title>
+<style>
+body{font-family:sans-serif;background:#e0f2fe;padding:15px}
+.card{background:#fff;max-width:480px;margin:20px auto;padding:25px;border-radius:15px;box-shadow:0 5px 15px rgba(0,0,0,.1);text-align:center}
+h2{margin:0}
+.sticker{font-size:40px}
+input,select,button{width:100%;padding:13px;margin:8px 0;border-radius:10px;border:1px solid #ccc;box-sizing:border-box;font-size:16px;text-align:left}
+button{background:#2563eb;color:#fff;border:none;font-weight:bold;text-align:center;font-size:18px}
+</style>
+</head>
+<body>
+<div class="card">
+<div class="sticker">📚✨</div>
+<h2>ABSENSI KELAS 7D</h2>
+<p style="font-size:12px;color:#666">📩 Auto ke Gmail</p>
+<input id="nama" placeholder="✏️ Nama Siswa">
+<select id="kelas"><option>7D</option><option>7A</option><option>7B</option></select>
+<select id="status">
+<option value="Hadir">✅ Hadir - Masuk</option>
+<option value="Sakit">🤒 Sakit</option>
+<option value="Izin">📝 Izin</option>
+<option value="Alpa">❌ Alpa</option>
+</select>
+<button onclick="kirim()">🚀 KIRIM KE GMAIL</button>
+<div id="hasil" style="margin-top:15px;text-align:left"></div>
+</div>
+<form id="f" action="https://formsubmit.co/0c1ca26c9efa9a091345156662f80f25" method="POST" style="display:none">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_subject" id="fs">
+<input type="hidden" name="Nama" id="fn">
+<input type="hidden" name="Kelas" id="fk">
+<input type="hidden" name="Status" id="fst">
+<input type="hidden" name="Waktu" id="fw">
+</form>
+<script>
+function kirim(){
+let n=document.getElementById('nama').value;
+if(!n)return alert('Isi nama dulu pung! 📝');
+let k=document.getElementById('kelas').value;
+let s=document.getElementById('status').value;
+let w=new Date().toLocaleString('id-ID');
+document.getElementById('fn').value=n;
+document.getElementById('fk').value=k;
+document.getElementById('fst').value=s;
+document.getElementById('fw').value=w;
+document.getElementById('fs').value='ABSEN '+s+' - '+n;
+document.getElementById('f').submit();
+}
+</script>
+</body>
+</html>
