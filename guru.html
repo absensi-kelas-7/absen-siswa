@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Rekap Guru</title>
+<style>body{background:#0f172a;color:#fff;font-family:sans-serif;padding:20px}table{width:100%;border-collapse:collapse;margin-top:10px}td,th{border:1px solid #334155;padding:8px;font-size:12px}button{padding:12px;border-radius:10px;border:none;width:100%;margin-top:10px;font-weight:bold}.ijo{background:#22c55e}</style>
+</head>
+<body>
+<h2>REKAP GURU - KELAS 7</h2>
+<p>Hanya guru yang tau link ini</p>
+<button class="ijo" onclick="download()">📥 DOWNLOAD REKAP SEMUA (Excel)</button>
+<p id="jml"></p>
+<table><thead><tr><th>Waktu</th><th>Nama</th><th>Kelas</th><th>Ket</th></tr></thead><tbody id="isi"></tbody></table>
+<button onclick="localStorage.removeItem('absen_guru');location.reload()" style="background:transparent;color:#f87171">Hapus Semua</button>
+<script>
+function load(){let d=JSON.parse(localStorage.getItem('absen_guru')||'[]');document.getElementById('jml').innerText=d.length+' siswa';let h='';d.forEach(x=>h+=`<tr><td>${x.waktu}</td><td>${x.nama}</td><td>${x.kelas}</td><td>${x.ket}</td></tr>`);document.getElementById('isi').innerHTML=h;return d}
+function download(){let d=load();if(!d.length){alert('Belum ada data di HP/laptop ini');return}let csv="Waktu,Nama,Kelas,Ket\n"+d.map(x=>`"${x.waktu}","${x.nama}","${x.kelas}","${x.ket}"`).join("\n");let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='rekap-kelas7.csv';a.click()}
+load();
+</script>
+</body>
+</html>
