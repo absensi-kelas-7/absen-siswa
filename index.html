@@ -2,55 +2,40 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Absensi Kelas 7</title>
 <style>
-body{font-family:sans-serif;background:#e0f2fe;padding:15px}
-.card{background:#fff;max-width:480px;margin:20px auto;padding:25px;border-radius:15px;box-shadow:0 5px 15px rgba(0,0,0,.1);text-align:center}
-.sticker{font-size:40px}
-input,select,button{width:100%;padding:13px;margin:8px 0;border-radius:10px;border:1px solid #ccc;box-sizing:border-box;font-size:16px}
-button{background:#2563eb;color:#fff;border:none;font-weight:bold;font-size:18px;cursor:pointer}
-#sukses{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.9);justify-content:center;align-items:center;flex-direction:column;z-index:999}
-.centang{width:80px;height:80px;border-radius:50%;background:#22c55e;display:flex;justify-content:center;align-items:center;font-size:50px;color:#fff;animation:pop 0.5s ease}
-@keyframes pop{0%{transform:scale(0)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+*{box-sizing:border-box;font-family:system-ui}
+body{background:#0f0f0f;color:#fff;margin:0;padding:16px;display:flex;justify-content:center}
+.card{background:#1c1c1c;width:100%;max-width:520px;border-radius:20px;padding:22px;border:1px solid #333}
+h1{text-align:center;margin:0;font-size:22px}
+.sub{text-align:center;color:#aaa;font-size:12px;margin:6px 0 16px}
+input,select{width:100%;padding:14px;border-radius:12px;border:1px solid #333;background:#111;color:#fff;margin-bottom:12px;font-size:16px}
+.btn{width:100%;padding:14px;border-radius:12px;border:none;font-weight:800;font-size:15px;cursor:pointer;margin-bottom:10px}
+.btn-kirim{background:#fff;color:#000}
+.btn-down{background:#25D366;color:#000}
+.btn-del{background:transparent;color:#ff5a5a;border:1px solid #333;margin-top:10px}
+.ok{display:none;background:#00c851;padding:10px;border-radius:10px;text-align:center;font-weight:700;margin-bottom:10px}
+table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}
+th,td{border:1px solid #333;padding:6px}
+th{background:#222}
+.jml{text-align:center;color:#888;font-size:13px;margin-top:8px}
 </style>
 </head>
 <body>
 <div class="card">
-<div class="sticker">📚✨</div>
-<h2>ABSENSI KELAS 7</h2>
-<input id="nama" placeholder="✏️ Nama Siswa">
-<select id="kelas"><option>7A</option><option>7B</option><option>7C</option><option>7D</option></select>
-<select id="status">
-<option value="Hadir">✅ Hadir</option>
-<option value="Sakit">🤒 Sakit</option>
-<option value="Izin">📝 Izin</option>
-<option value="Alpa">❌ Alpa</option>
-</select>
-<button id="btn" onclick="kirim()">🚀 KIRIM😹</button>
-</div>
-<div id="sukses">
-<div class="centang">✓</div>
-<h2 style="color:#22c55e;margin-top:15px">SUKSES!</h2>
-<p id="sukses-pesan">Absen berhasil dikirim</p>
+<h1>ABSENSI KELAS 7</h1>
+<div class="sub">7A 7B 7C 7D - Rekap 1 File</div>
+<div id="ok" class="ok">✅ Absen berhasil!</div>
+<input id="nama" placeholder="Nama lengkap">
+<select id="kelas"><option value="">Pilih Kelas</option><option>7A</option><option>7B</option><option>7C</option><option>7D</option></select>
+<select id="ket"><option>Hadir</option><option>Sakit</option><option>Izin</option><option>Alfa</option></select>
+<button class="btn btn-kirim" onclick="kirim()">KIRIM ABSEN</button>
+<button class="btn btn-down" onclick="down()">📥 DOWNLOAD REKAP SEMUA (Excel)</button>
+<div id="jml" class="jml">0 siswa</div>
+<div style="overflow:auto;max-height:320px"><table id="tbl"><thead><tr><th>Waktu</th><th>Nama</th><th>Kelas</th><th>Ket</th></tr></thead><tbody></tbody></table></div>
+<button class="btn btn-del" onclick="hapus()">Hapus Semua</button>
 </div>
 <script>
-function kirim(){
-let n=document.getElementById('nama').value;
-if(!n)return alert('Isi nama dulu pung! 📝');
-let k=document.getElementById('kelas').value;
-let s=document.getElementById('status').value;
-let w=new Date().toLocaleString('id-ID');
-document.getElementById('btn').innerHTML='⏳ Mengirim...';
-fetch('https://formsubmit.co/ajax/0c1ca26c9efa9a091345156662f80f25',{
-method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-body:JSON.stringify({_captcha:false,_template:'table',_subject:'ABSEN '+s+' - '+n,Nama:n,Kelas:k,Status:s,Waktu:w})
-}).then(()=>{
-document.getElementById('sukses').style.display='flex';
-document.getElementById('sukses-pesan').innerHTML='Halo '+n+' absen '+s+' berhasil!';
-setTimeout(()=>{document.getElementById('sukses').style.display='none';document.getElementById('btn').innerHTML='🚀 KIRIM';document.getElementById('nama').value='';},3000);
-});
-}
-</script>
-</body>
-</html>
+let data=JSON.parse(localStorage.getItem('absen7')||'[]');
+function render(){document.querySelector('#tbl tbody').innerHTML=data.map(d=>`<tr><td>${d.w}</
